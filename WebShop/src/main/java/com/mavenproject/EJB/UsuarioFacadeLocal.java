@@ -29,7 +29,8 @@ public interface UsuarioFacadeLocal {
     List<Usuario> findRange(int[] range);
 
     int count();
-
-    public Usuario comprobarUsuario(Usuario user);
+    
+    public boolean nickExistente(Usuario user);
+    
 
 }

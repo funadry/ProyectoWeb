@@ -8,6 +8,8 @@ package com.mavenproject.EJB;
 import com.mavenproject.modelo.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -18,7 +20,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFacadeLocal {
-
+    Usuario us = null;
     @PersistenceContext(unitName = "WebShopPU")
     private EntityManager em;
 
@@ -30,29 +32,24 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     public UsuarioFacade() {
         super(Usuario.class);
     }
-
-    @Override
-    public Usuario comprobarUsuario(Usuario user) {
-	Usuario us = null;
-        String consulta = null;
-
-        try{
-            consulta="SELECT u FROM Usuario u WHERE u.nick = ?1 and u.password = ?2";
-            Query query = em.createQuery(consulta);
-            query.setParameter(1, user.getNick());
-            query.setParameter(2, user.getPassword());
-            List<Usuario> listaUsuarios = query.getResultList();
-
-            if(!listaUsuarios.isEmpty()){
-                us = listaUsuarios.get(0);
+    
+    public boolean nickExistente(Usuario user){
+        String consulta1 = null;
+        consulta1="SELECT u FROM Usuario u WHERE u.nick = ?1";
+        Query query = em.createQuery(consulta1);
+        query.setParameter(1, user.getNick());
+        List<Usuario> listaUsuarios = query.getResultList();
+           System.out.println("Está haciendo la comprobación");
+            if(listaUsuarios.isEmpty()){       
+                    System.out.println("Está todo ok");
+                return false;
+         
             }
             else{
-                System.out.println("La consulta no ha devuelto nada...");
-            }
-        }catch(Exception e){
-            System.out.println("Salimos por aqui...:" + e.getMessage());
-        }
-        return us;
+                 System.out.println("Está todo mal");
+                
+                return true;   
+            }  
     }
 
 }
