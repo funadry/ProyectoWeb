@@ -10,19 +10,21 @@ import javax.persistence.EntityManager;
 
 /**
  *
- * @author Tfg
+ * @author Usuario
  */
 public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {
-        this.entityClass = entityClass;
+
+	this.entityClass = entityClass;
     }
 
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
+
         getEntityManager().persist(entity);
     }
 
@@ -61,4 +63,5 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
+
 }
